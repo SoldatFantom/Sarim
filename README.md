@@ -1,3 +1,5 @@
+"The program can currently only be installed on Linux/Debian."
+
 Here’s how you can explain the installation steps in English for your README.md file:
 
 markdown
