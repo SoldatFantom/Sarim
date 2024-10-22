@@ -32,7 +32,7 @@ Once the repository is cloned, navigate to the project directory:
 
 bash
 
-cd sarim
+cd Sarim
 
 Make the installation script executable:
 
