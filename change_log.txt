@@ -1,0 +1,48 @@
+October 22, 2024 Soldat Fantom V_1.4 {
+
+Correction added to the function:
+
+cpp
+
+// You must define the total duration of the music here (for example, 240 seconds for a 4-minute track)
+total_length = get_mp3_duration(240); // Replace this with the actual music duration
+
+Replace with:
+
+cpp
+
+total_length = get_mp3_duration(file); // Get the real duration time from the audio file using get_mp3_duration(file);
+
+To avoid limiting the audio to only 240 seconds.
+
+}
+
+October 22, 2024 Soldat Fantom V_1.5{
+
+Correction added to the function:
+
+cpp
+
+// You must define the total duration of the music here (for example, 240 seconds for a 4-minute track)
+total_length = get_mp3_duration(240); // Replace this with the actual music duration
+
+Replace with:
+
+cpp
+
+total_length = get_audio_duration(file); // Get the real duration time from the audio file using get_audio_duration(file);
+
+Explanation:
+
+In this version, we made two important changes:
+
+    Replacement of get_mp3_duration() with get_audio_duration():
+        The original get_mp3_duration() function was limited to MP3 files and required the user to manually define the total length (e.g., 240 seconds for a 4-minute track).
+        We replaced it with get_audio_duration(), which dynamically calculates the actual duration of the audio file (MP3, OGG, WAV, etc.) by reading its metadata. This eliminates the need for a fixed duration and allows the program to handle a variety of audio formats.
+
+    Switch from mpg123 to FFmpeg:
+        The previous version relied on the mpg123 library, which was specifically designed for MP3 playback. However, this limited the program to only support MP3 files.
+        We switched to FFmpeg, a more versatile library that supports a wide range of audio (and video) formats, including MP3, OGG, WAV, and others. This transition allows the program to handle different audio file types seamlessly without needing format-specific functions.
+
+By integrating FFmpeg and the get_audio_duration() function, the program now calculates the real duration of any supported audio file, providing more flexibility and accuracy in playback.
+}

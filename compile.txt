@@ -1,0 +1,2 @@
+gcc -o sfplayer sfplayer.c -lmpg123 -lm -lncurses -lSDL2 -lSDL2_mixer
+
