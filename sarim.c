@@ -599,7 +599,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     if (strstr(argv[1], "--version") != NULL) {
-        printf("dplayer Actualy version is V_1.5\n");
+        printf("Sarim Actualy version is V_1.5\n");
         return 0;
 
     }
