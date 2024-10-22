@@ -4,7 +4,7 @@ Here’s how you can explain the installation steps in English for your README.m
 
 markdown
 
-# Installation of SFplayer
+# Installation of dplayer
 
 To install SFplayer, please follow the steps below:
 
@@ -24,7 +24,7 @@ Installation Steps
 
     bash
 
-git clone https://github.com/SoldatFantom/SFplayer.git
+git clone https://github.com/SoldatFantom/dplayer.git
 
 Navigate to the project directory:
 
@@ -32,7 +32,7 @@ Once the repository is cloned, navigate to the project directory:
 
 bash
 
-cd SFplayer
+cd dplayer
 
 Make the installation script executable:
 
@@ -56,7 +56,7 @@ After the installation, you can verify if SFplayer has been installed correctly 
 
 bash
 
-sfplayer --version
+dplayer --version
 
 You should see the version of the program if the installation was successful.
 
@@ -64,9 +64,9 @@ Resume Installation Commands
 
 
 git clone https://github.com/SoldatFantom/SFplayer.git
-cd SFplayer
+cd dplayer
 sudo chmod +x install.sh
 sudo ./install.sh
-sfplayer --version
+dplayer --version
 
 
