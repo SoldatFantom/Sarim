@@ -58,18 +58,34 @@ sfplayer --version
 
 You should see the version of the program if the installation was successful.
 
-vbnet
+Resume Installation Commands
 
+    Clone the repository:
 
-### Explanation of Sections
+    bash
 
-- **Prerequisites:** This section informs users that they need Git installed to clone the repository. You can also add any other dependencies if necessary.
-- **Installation Steps:** These steps clearly outline what the user needs to do to install the project. Each command is provided in a code block, making it easy to follow.
-- **Verification of Installation:** An optional but useful step to ensure that users can verify the installation was successful.
+git clone https://github.com/SoldatFantom/SFplayer.git
 
-### Tips
+Navigate to the project directory:
 
-- **Use Comments:** If necessary, you can add comments or explanations after each command to help users understand what they are doing.
-- **OS-Specific Instructions:** If the installation script requires specific instructions for Windows, macOS, or other systems, feel free to include them.
+bash
 
-By following this template, you’ll help users install your project clearly and effectively. If you need further assistance with customizing the `README.md`, just let me know!
+cd SFplayer
+
+Make the installation script executable:
+
+bash
+
+sudo chmod +x install.sh
+
+Run the installation script:
+
+bash
+
+sudo ./install.sh
+
+Verify the installation (optional):
+
+bash
+
+sfplayer --version
