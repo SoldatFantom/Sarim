@@ -563,6 +563,11 @@ int main(int argc, char *argv[]) {
         display_help();
         return 1;
     }
+    if (strstr(argv[1], "--version") != NULL) {
+        printf("SFplayer Actualy version is V_1.5\n");
+        return 0;
+
+    }
 
      initscr(); // Commencer le mode ncurses
     cbreak(); // Activer le mode cbreak

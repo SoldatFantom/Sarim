@@ -1,0 +1,146 @@
+Program Description
+
+SF_player is a console-based audio player designed to play audio files in MP3, WAV, and OGG formats. It allows users to play audio files from a directory, a playlist in M3U format, or individual audio files. Whether you want to listen to a complete album or just a specific song, SF_player offers a simple and efficient interface for managing your music in a terminal environment.
+Available Commands
+
+Here are the options and commands you can use with SF_player:
+Options:
+
+    --dir <directory>
+    Recursively scans the specified directory for .mp3, .wav, and .ogg files and plays them in order. A playlist will be created dynamically.
+
+    --nopath
+    Suppresses the display of file paths in the output. This option can be placed before or after other options and arguments.
+
+    <file.m3u>
+    Plays a playlist file in M3U format. The playlist should contain paths to .mp3, .wav, or .ogg files, which will be played in the listed order.
+
+    <file.mp3 | file.wav | file.ogg>
+    Plays a specified audio file directly in the .mp3, .wav, or .ogg format.
+
+Supported Formats:
+
+    SF_player currently supports MP3, WAV, and OGG audio files.
+
+Usage Examples:
+
+    SF_player --dir /path/to/music
+    Plays all .mp3, .wav, and .ogg files in the specified directory.
+
+    SF_player --nopath --dir /path/to/music
+    Plays all audio files in the specified directory without displaying file paths.
+
+    SF_player my_playlist.m3u
+    Plays the audio files listed in the M3U playlist.
+
+    SF_player song.mp3
+    Plays the specified MP3 file.
+
+    SF_player sound.wav
+    Plays the specified WAV file.
+
+    SF_player track.ogg
+    Plays the specified OGG file.
+
+    SF_player --nopath song.mp3
+    Plays the specified MP3 file without displaying the file path.
+
+Controls During Playback:
+
+    d
+    Opens the playlist explorer.
+
+    q
+    Quits the player.
+
+    p
+    Pauses/Resumes playback.
+
+    Right Arrow
+    Skips forward in the track.
+
+    Left Arrow
+    Rewinds in the track.
+
+    Up Arrow
+    Plays the next track in the playlist.
+
+    Down Arrow
+    Plays the previous track in the playlist.
+
+    +
+    Increases the volume.
+
+    -
+    Decreases the volume.
+
+
+
+/*
+ * Ce programme a été développé avec l'aide de plusieurs outils et bibliothèques :
+ *
+ * - SDL2 et SDL_mixer, distribués sous la licence zlib.
+ *   Plus d'informations : https://www.libsdl.org/license.php
+ *
+ * - FFmpeg, une bibliothèque multimédia puissante, sous licence LGPL.
+ *   Plus d'informations : https://ffmpeg.org/
+ *
+ * - Assistance fournie par ChatGPT, un modèle de langage créé par OpenAI,
+ *   pour répondre à des questions techniques et fournir des suggestions.
+ *   Plus d'informations : https://openai.com/chatgpt
+ *
+ * - Débogage et création assurés par Soldat Fantôme, avec une aide précieuse pour
+ *   identifier et corriger les erreurs du programme.
+ *
+ * Merci à toutes les personnes, technologies et entités qui ont contribué à ce projet.
+ *
+ * This program was developed with the help of several tools and libraries:
+ *
+ * - SDL2 and SDL_mixer, distributed under the zlib license.
+ *   More information: https://www.libsdl.org/license.php
+ *
+ * - FFmpeg, a powerful multimedia library, under the LGPL license.
+ *   More information: https://ffmpeg.org/
+ *
+ * - Assistance provided by ChatGPT, a language model created by OpenAI,
+ *   to answer technical questions and offer suggestions.
+ *   More information: https://openai.com/chatgpt
+ *
+ * - Debugging and creation provided by Soldat Fantôme, with valuable help in
+ *   identifying and fixing program errors.
+ *
+ * Thanks to all the people, technologies, and entities who contributed to this project.
+ *
+ * Este programa fue desarrollado con la ayuda de varias herramientas y bibliotecas:
+ *
+ * - SDL2 y SDL_mixer, distribuidos bajo la licencia zlib.
+ *   Más información: https://www.libsdl.org/license.php
+ *
+ * - FFmpeg, una poderosa biblioteca multimedia, bajo la licencia LGPL.
+ *   Más información: https://ffmpeg.org/
+ *
+ * - Asistencia proporcionada por ChatGPT, un modelo de lenguaje creado por OpenAI,
+ *   para responder a preguntas técnicas y ofrecer sugerencias.
+ *   Más información: https://openai.com/chatgpt
+ *
+ * - Depuración y creación asegurada por Soldat Fantôme, con una ayuda valiosa para
+ *   identificar y corregir los errores del programa.
+ *
+ * Gracias a todas las personas, tecnologías y entidades que contribuyeron a este proyecto.
+ *
+ * 本程序是通过多种工具和库的帮助开发的：
+ *
+ * - SDL2 和 SDL_mixer，在 zlib 许可下发布。
+ *   更多信息：https://www.libsdl.org/license.php
+ *
+ * - FFmpeg，一个强大的多媒体库，在 LGPL 许可下发布。
+ *   更多信息：https://ffmpeg.org/
+ *
+ * - 由 OpenAI 创建的语言模型 ChatGPT 提供的协助，
+ *   用于回答技术问题并提供建议。
+ *   更多信息：https://openai.com/chatgpt
+ *
+ * - 由 Soldat Fantôme 提供的调试和创作，帮助识别和修复程序错误。
+ *
+ * 感谢所有为此项目做出贡献的人、技术和实体。
+ */
