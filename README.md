@@ -24,7 +24,7 @@ Installation Steps
 
     bash
 
-git clone https://github.com/SoldatFantom/sarim.git
+git clone https://github.com/SoldatFantom/Sarim.git
 
 Navigate to the project directory:
 
@@ -63,7 +63,7 @@ You should see the version of the program if the installation was successful.
 Resume Installation Commands
 
 
-git clone https://github.com/SoldatFantom/sarim.git
+git clone https://github.com/SoldatFantom/Sarim.git
 cd sarim
 sudo chmod +x install.sh
 sudo ./install.sh
