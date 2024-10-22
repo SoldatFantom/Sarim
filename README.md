@@ -60,32 +60,11 @@ You should see the version of the program if the installation was successful.
 
 Resume Installation Commands
 
-    Clone the repository:
-
-    bash
 
 git clone https://github.com/SoldatFantom/SFplayer.git
-
-Navigate to the project directory:
-
-bash
-
 cd SFplayer
-
-Make the installation script executable:
-
-bash
-
 sudo chmod +x install.sh
-
-Run the installation script:
-
-bash
-
 sudo ./install.sh
-
-Verify the installation (optional):
-
-bash
-
 sfplayer --version
+
+
