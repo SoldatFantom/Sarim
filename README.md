@@ -64,7 +64,7 @@ Resume Installation Commands
 
 
 git clone https://github.com/SoldatFantom/Sarim.git
-cd sarim
+cd Sarim
 sudo chmod +x install.sh
 sudo ./install.sh
 sarim --version
