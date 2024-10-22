@@ -1,2 +1,2 @@
-gcc -o dplayer dplayer.c -lavformat -lavcodec -lavutil -lm -lncurses -lSDL2 -lSDL2_mixer
+gcc -o sarim sarim.c -lavformat -lavcodec -lavutil -lm -lncurses -lSDL2 -lSDL2_mixer
 

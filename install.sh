@@ -7,12 +7,13 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo "Installation de d_PLAYER..."
+echo "Installation de D_PLAYER..."
 
 # Installer les dépendances nécessaires
 
 # Copier des fichiers dans les répertoires appropriés
-cp dplayer /usr/local/bin/dplayer
-chmod +x /usr/local/bin/dplayer
+
+cp sarim /usr/local/bin/sarim
+chmod +x /usr/local/bin/sarim
 echo "Installation terminée !"
 rm output.log

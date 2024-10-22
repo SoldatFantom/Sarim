@@ -1,9 +1,9 @@
 Program Description
 
-d_player is a console-based audio player designed to play audio files in MP3, WAV, and OGG formats. It allows users to play audio files from a directory, a playlist in M3U format, or individual audio files. Whether you want to listen to a complete album or just a specific song, d_player offers a simple and efficient interface for managing your music in a terminal environment.
+sarim is a console-based audio player designed to play audio files in MP3, WAV, and OGG formats. It allows users to play audio files from a directory, a playlist in M3U format, or individual audio files. Whether you want to listen to a complete album or just a specific song, sarim offers a simple and efficient interface for managing your music in a terminal environment.
 Available Commands
 
-Here are the options and commands you can use with SF_player:
+Here are the options and commands you can use with sarim:
 Options:
 
     --dir <directory>
@@ -20,29 +20,29 @@ Options:
 
 Supported Formats:
 
-    d_player currently supports MP3, WAV, and OGG audio files.
+    sarim currently supports MP3, WAV, and OGG audio files.
 
 Usage Examples:
 
-    d_player --dir /path/to/music
+    sarim --dir /path/to/music
     Plays all .mp3, .wav, and .ogg files in the specified directory.
 
-    d_player --nopath --dir /path/to/music
+    sarim --nopath --dir /path/to/music
     Plays all audio files in the specified directory without displaying file paths.
 
-    d_player my_playlist.m3u
+    sarim my_playlist.m3u
     Plays the audio files listed in the M3U playlist.
 
-    d_player song.mp3
+    sarim song.mp3
     Plays the specified MP3 file.
 
-    d_player sound.wav
+    sarim sound.wav
     Plays the specified WAV file.
 
-    d_player track.ogg
+    sarim track.ogg
     Plays the specified OGG file.
 
-    d_player --nopath song.mp3
+    sarim --nopath song.mp3
     Plays the specified MP3 file without displaying the file path.
 
 Controls During Playback:
