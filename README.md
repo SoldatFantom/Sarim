@@ -4,9 +4,9 @@ Here’s how you can explain the installation steps in English for your README.m
 
 markdown
 
-# Installation of dplayer
+# Installation of sarim
 
-To install dplayer, please follow the steps below:
+To install sarim, please follow the steps below:
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ Installation Steps
 
     bash
 
-git clone https://github.com/SoldatFantom/dplayer.git
+git clone https://github.com/SoldatFantom/sarim.git
 
 Navigate to the project directory:
 
@@ -32,7 +32,7 @@ Once the repository is cloned, navigate to the project directory:
 
 bash
 
-cd dplayer
+cd sarim
 
 Make the installation script executable:
 
@@ -56,17 +56,17 @@ After the installation, you can verify if SFplayer has been installed correctly 
 
 bash
 
-dplayer --version
+sarim --version
 
 You should see the version of the program if the installation was successful.
 
 Resume Installation Commands
 
 
-git clone https://github.com/SoldatFantom/dplayer.git
-cd dplayer
+git clone https://github.com/SoldatFantom/sarim.git
+cd sarim
 sudo chmod +x install.sh
 sudo ./install.sh
-dplayer --version
+sarim --version
 
 
