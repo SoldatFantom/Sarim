@@ -6,7 +6,7 @@ markdown
 
 # Installation of dplayer
 
-To install SFplayer, please follow the steps below:
+To install dplayer, please follow the steps below:
 
 ## Prerequisites
 
@@ -63,7 +63,7 @@ You should see the version of the program if the installation was successful.
 Resume Installation Commands
 
 
-git clone https://github.com/SoldatFantom/SFplayer.git
+git clone https://github.com/SoldatFantom/dplayer.git
 cd dplayer
 sudo chmod +x install.sh
 sudo ./install.sh
