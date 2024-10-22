@@ -7,12 +7,12 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo "Installation de SF_PLAYER..."
+echo "Installation de d_PLAYER..."
 
 # Installer les dépendances nécessaires
 
 # Copier des fichiers dans les répertoires appropriés
-cp sfplayer /usr/local/bin/sfplayer
-chmod +x /usr/local/bin/sfplayer
+cp dplayer /usr/local/bin/dplayer
+chmod +x /usr/local/bin/dplayer
 echo "Installation terminée !"
 rm output.log
