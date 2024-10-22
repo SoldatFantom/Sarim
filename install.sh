@@ -7,7 +7,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-echo "Installation de D_PLAYER..."
+echo "Installation de Sarim..."
 
 # Installer les dépendances nécessaires
 
