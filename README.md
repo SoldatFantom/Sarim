@@ -12,7 +12,6 @@ To install sarim, please follow the steps below:
 
 Make sure you have Git installed on your system. You can check if Git is installed by running:
 
-```bash
 git --version
 
 If Git is not installed, you can install it using the appropriate command for your operating system.
@@ -61,6 +60,8 @@ sarim --version
 You should see the version of the program if the installation was successful.
 
 Resume Installation Commands
+
+```bash
 
 
 git clone https://github.com/SoldatFantom/Sarim.git
