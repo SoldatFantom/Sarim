@@ -599,7 +599,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     if (strstr(argv[1], "--version") != NULL) {
-        printf("Sarim Actualy version is V_1.5\n");
+        printf("Sarim Actualy version is V_1.6\n");
         return 0;
 
     }
@@ -646,8 +646,11 @@ a =0;
          u = 1;
          a ++;
         char dir_name [900];
-
-        sprintf(dir_name,"find '%s' -type f  -name '*.mp3' -o -name '*.wav' -o -name '*.ogg' >/tmp/tmp.m3u",argv[a]);
+        sprintf(dir_name,"ls -R '%s/*/*.mp3' >/tmp/tmp.m3u",argv[a]);
+        system(dir_name);
+        sprintf(dir_name,"ls -R '%s/*/*.wav' >>/tmp/tmp.m3u",argv[a]);
+        system(dir_name);
+        sprintf(dir_name,"ls -R '%s/*/*.ogg' >>/tmp/tmp.m3u",argv[a]);
         system(dir_name);
             parse_m3u("/tmp/tmp.m3u");
         if (file_count > 0) {
