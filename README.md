@@ -54,7 +54,7 @@ Verification of Installation
 After the installation, you can verify if SFplayer has been installed correctly by running the following command:
 
 bash
-
+cd ..
 sarim --version
 
 You should see the version of the program if the installation was successful.
@@ -68,6 +68,7 @@ git clone https://github.com/SoldatFantom/Sarim.git
 cd Sarim
 sudo chmod +x install.sh
 sudo ./install.sh
+cd ..
 sarim --version
 
 
