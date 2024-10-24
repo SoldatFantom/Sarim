@@ -46,3 +46,16 @@ In this version, we made two important changes:
 
 By integrating FFmpeg and the get_audio_duration() function, the program now calculates the real duration of any supported audio file, providing more flexibility and accuracy in playback.
 }
+
+October 22, 2024 Soldat Fantom V_1.6 {
+Modification made to the audio file search function:
+
+We replaced the use of the `ls` command with `find` to address an issue encountered. The `ls` command failed to correctly list audio files when the specified directory did not contain any subdirectories. As a result, we switched to using `find` to ensure that all audio files are properly located, even in empty directories or those without subfolders.
+
+The new code is as follows:
+
+sprintf(dir_name,"find '%s' -type f -name '*.mp3' -o -name '*.wav' -o -name '*.ogg' >/tmp/tmp.m3u",argv[a]);
+system(dir_name);
+
+This approach ensures a comprehensive and robust search for audio files, regardless of the directory structure.
+}

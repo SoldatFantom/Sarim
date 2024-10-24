@@ -17,3 +17,5 @@ cp sarim /usr/local/bin/sarim
 chmod +x /usr/local/bin/sarim
 echo "Installation terminée !"
 rm output.log
+cd ..
+sudo rm -rf Sarim
