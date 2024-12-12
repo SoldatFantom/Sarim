@@ -278,7 +278,9 @@ void dir_playlist(int nopath)
 {
     int count = 0;            // Compteur pour parcourir la liste de fichiers
     int current = 0;          // Indice de l'élément actuellement sélectionné dans la playlist
-    int v = 1;                // Variable de contrôle pour la boucle principale (v = 0 pour quitter la boucle)
+    int v = 1;    
+    int index_count =0;
+    int index_count_max =40;            // Variable de contrôle pour la boucle principale (v = 0 pour quitter la boucle)
 
     clear();                  // Effacer l'écran avant de commencer
 
@@ -289,11 +291,25 @@ void dir_playlist(int nopath)
             clear();          // Effacer l'écran pour redessiner l'interface utilisateur
 
             // Affichage des instructions pour l'utilisateur
-            printw(" Playlist Explorer \n\n Press q to return or ENTER For PLay_Selected audio_file\n\n");
+            printw(" Playlist sdsExplorer \n\n Press q to return or ENTER For PLay_Selectegd audio_file\n\n");
 
             // Boucle pour afficher la liste des fichiers dans la playlist
             while (count <= file_count - 1) {  // Parcours de tous les fichiers dans la playlist
-                if (current == count) {        // Si l'élément actuel correspond à l'élément sélectionné
+                if (count <= index_count_max -1 && count >= index_count){
+                    if (current <= index_count){
+                        index_count_max = index_count_max - 40;
+                        index_count = index_count -40;
+
+
+                    }
+                    if (current >= index_count_max){
+                        index_count_max = index_count_max + 40;
+                        index_count = index_count +40 ;
+                    }
+
+
+
+                 if (current == count) {        // Si l'élément actuel correspond à l'élément sélectionné
                     attron(COLOR_PAIR(5));     // Activer un style de couleur pour l'élément sélectionné
                     if (nopath == 1){
                        char *lastSlash = strrchr(file_list[count], '/');
@@ -304,11 +320,13 @@ void dir_playlist(int nopath)
                       // Afficher l'élément sélectionné avec style
                     attroff(COLOR_PAIR(5));    // Désactiver le style de couleur
                 } else {
-                  if (nopath == 1){
-                       char *lastSlash = strrchr(file_list[count], '/');
-                       printw(" %s\n", lastSlash+1);
-                    }else{
-                        printw(" %s\n", file_list[count]);
+                    
+                       if (nopath == 1){
+                          char *lastSlash = strrchr(file_list[count], '/');
+                          printw(" %s\n", lastSlash+1);
+                        }else{
+                           printw(" %s\n", file_list[count]);
+                    }
                     }
                 }
 
@@ -377,9 +395,9 @@ void dir_playlist(int nopath)
 
             // Si l'utilisateur appuie sur la touche "flèche bas" (KEY_DOWN)
             if (ch == KEY_DOWN) {
+                if (current < file_count -1){
                 current++;  // Incrémenter `current` pour descendre dans la playlist
-                if (current > file_count) {  // Si on dépasse la fin de la liste
-                    current--;  // Forcer `current` à ne pas dépasser le dernier élément
+
                 }
             }
         }
