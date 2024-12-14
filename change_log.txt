@@ -60,6 +60,7 @@ system(dir_name);
 This approach ensures a comprehensive and robust search for audio files, regardless of the directory structure.
 }
 
+
 December 13, 2024 - Soldat Fantom V_1.7
 {
 New adjustments to the display logic based on terminal window size:
@@ -98,4 +99,14 @@ if (current > index_act_max) {
 }
 
 This ensures the selected item is always visible by shifting the list dynamically when needed.
+Added the clear_input_buffer() function:
+We added a call to clear_input_buffer() in the handle_input() function to clear the input buffer of ncurses after each key press is processed. This ensures that no incorrect or leftover inputs are read from previous events.
+
+void clear_input_buffer() {
+    // Clear the input buffer by calling `getch()` until it's empty
+    while (getch() != ERR) {}
 }
+
+
+}
+

@@ -81,6 +81,7 @@
 void display_ihelp();
 void handle_input();
 bool can_execute = true;
+int ch= 0;
 
 // Fonction pour obtenir la durée totale d'un fichier MP3
 
@@ -503,11 +504,21 @@ void dir_playlist(int nopath)
         }
     }
 }
-
+void clear_input_buffer() {
+    // Vider le tampon en appelant `getch()` jusqu'à ce qu'il soit vide
+    while (getch() != ERR) {}
+}
 // Fonction pour traiter les entrées de l'utilisateur avec ncurses
 void handle_input(char * file,int nopath) {
-    int ch = 0;
-    ch = getch(); // Obtenir une entrée utilisateur
+
+
+
+     ch = getch();
+
+
+
+
+        // Obtenir une entrée utilisateur
     switch (ch) {
         case 'q': // Quitter
             stop_audio();
@@ -569,16 +580,19 @@ void handle_input(char * file,int nopath) {
             skip_audio(-SKIP_TIME);
             break;
         case KEY_UP: // Suivant
-            if  (file_list[current_index] != 0){
+
+            if  (file_list[current_index] != 0 ){
+
             current_index++;
             if (current_index >= file_count) {
                 current_index = 0; // Revenir au début   ////ici pour ka touche d logique de lecture du fichier playliste
             }
-            printw("Suivant: %s\n", file_list[current_index]);
+
             refresh();
             stop_audio();
             play_audio(file_list[current_index]);
             }
+
             break;
         case KEY_DOWN : // Précédent
             if  (file_list[current_index] != 0){
@@ -587,7 +601,7 @@ void handle_input(char * file,int nopath) {
             if (current_index < 0) {
                 current_index = file_count - 1; // Revenir à la fin
             }
-            printw("Précédent: %s\n", file_list[current_index]);
+
             refresh();
             stop_audio();
             play_audio(file_list[current_index]);
@@ -612,7 +626,8 @@ void handle_input(char * file,int nopath) {
             }
             break;
     }
-ch =0;
+
+ clear_input_buffer();
 }
 
 // Fonction pour parser le fichier M3U
@@ -717,7 +732,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     if (strstr(argv[1], "--version") != NULL) {
-        printf("Sarim Actualy version is V_1.7\n");
+        printf("Sarim Actualy version is V_1.8\n");
         return 0;
 
     }
