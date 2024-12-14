@@ -59,3 +59,43 @@ system(dir_name);
 
 This approach ensures a comprehensive and robust search for audio files, regardless of the directory structure.
 }
+
+December 13, 2024 - Soldat Fantom V_1.7
+{
+New adjustments to the display logic based on terminal window size:
+
+We introduced dynamic handling of the display based on the terminal window's dimensions (rows and cols). If the terminal window is smaller than 30 rows and 120 columns, we adjust the index values (index_act and index_act_max) to ensure proper display. If the window is larger, we use different index values for optimal display.
+
+getmaxyx(stdscr, rows, cols);
+
+if (rows < 30 && cols < 120) {
+    index_act = index_2_count;
+    index_act_max = index_2_count_max;
+} else {
+    index_act = index_count;
+    index_act_max = index_count_max;
+}
+
+This change allows the program to adjust the display depending on the terminal's size, ensuring proper visibility of items without truncation.
+Index adjustment based on the selected item:
+
+The logic now automatically adjusts the range of displayed items when the selected item (current) is outside the current visible range (index_act to index_act_max). If the selected item is out of range, the program scrolls the list to make it visible.
+
+if (current < index_act + 1) {
+    if (index_act != 0) {
+        index_count_max = index_count_max - 40;
+        index_2_count_max = index_2_count_max - 20;
+        index_2_count = index_2_count - 20;
+        index_count = index_count - 40;
+    }
+}
+
+if (current > index_act_max) {
+    index_count_max = index_count_max + 40;
+    index_count = index_count + 40;
+    index_2_count_max = index_2_count_max + 20;
+    index_2_count = index_2_count + 20;
+}
+
+This ensures the selected item is always visible by shifting the list dynamically when needed.
+}
