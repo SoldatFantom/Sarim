@@ -717,7 +717,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     if (strstr(argv[1], "--version") != NULL) {
-        printf("Sarim Actualy version is V_1.6\n");
+        printf("Sarim Actualy version is V_1.7\n");
         return 0;
 
     }
