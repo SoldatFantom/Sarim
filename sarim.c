@@ -199,12 +199,81 @@ void skip_audio(int seconds) {
 void display_progress(Mix_Music *music, const char* filename,int nopath) {
     int total_length = get_audio_duration(filename);  // Utilise la fonction pour obtenir la durée totale
     int current_position = Mix_GetMusicPosition(music);  // Obtenir la position actuelle
-
+    int rows;
+    int cols;
     if (total_length > 0 && current_position >= 0) {
         int remaining_time = total_length - current_position;
         int percentage = (current_position * 100) / total_length;
 
         clear();
+      getmaxyx(stdscr, rows, cols);
+
+        if (rows < 30 && cols <  120) {
+
+
+                printw("                                   SARIM \n\n");
+                printw("                    CREATED BY SOLDAT FANTOM OCTOBER 2024 \n\n");
+      printw(" This program was developed with the help of SDL2, SDL_mixer (zlib license) and FFmpeg (LGPL license)\n");
+      printw(" Assistance provided by ChatGPT, a language model created by OpenAI.\n");
+      printw(" Debugging and development supported by Soldat Fantom,\n with valuable help in identifying and correcting program errors.\n");
+      printw(" Thank you to all the people, technologies, and entities that contributed to this project!\n\n");
+      printw(" Available commands:\n");
+      printw(" d - open play_list Explorer\n");
+      printw(" q - Quit the program\n");
+      printw(" p - Pause/Resume the music\n");
+      printw(" Right arrow - Fast forward a few seconds\n");
+      printw(" Left arrow - Rewind a few seconds\n");
+      printw(" Up arrow - Skip to the next track\n");
+      printw(" Down arrow - Go back to the previous track\n");
+      printw(" + - Increase volume\n");
+      printw(" - - Decrease volume    cols %d rows %d \n\n",cols,rows);
+
+        printw(" ===============================================================================\n\n");
+        printw(" Playing:");
+        attron(COLOR_PAIR(4));
+        if (nopath == 1){
+            char *lastSlash = strrchr(filename, '/');
+             printw("%s\n", lastSlash+1);
+        }else{
+        printw("%s\n", filename);
+        }
+        attroff(COLOR_PAIR(4));
+        printw(" Time Remaining:");
+        attron(COLOR_PAIR(3));
+
+        printw(" %d:%02d",remaining_time / 60, remaining_time % 60);
+        attroff(COLOR_PAIR(3));
+        printw(" / Total: ");
+        attron(COLOR_PAIR(3));
+
+
+           printw("%d:%02d\n",total_length / 60, total_length % 60);
+          attroff(COLOR_PAIR(3));
+        printw(" Progress: [");
+        attron(COLOR_PAIR(1));
+        int bar_length = 40; // Longueur de la barre de progression
+        int filled_length = (percentage * bar_length) / 100;
+        for (int i = 0; i < bar_length; i++) {
+            if (i < filled_length) {
+                printw("=");
+            } else {
+                printw(" ");
+            }
+        }
+        attroff(COLOR_PAIR(1));
+        printw("] (");
+        attron(COLOR_PAIR(6));
+        printw("%d%%", percentage);
+        attroff(COLOR_PAIR(6));
+        printw(")");
+        printw("\n\n ===============================================================================                                                 \n");
+        refresh();
+
+        }
+        else{
+
+
+
 
       printw("\n\n           SARIM \n   \n   CREATED BY SOLDAT FANTOM OCTOBER 2024 \n\n");
       printw(" This program was developed with the help of SDL2, SDL_mixer (zlib license) and FFmpeg (LGPL license)\n");
@@ -262,6 +331,7 @@ void display_progress(Mix_Music *music, const char* filename,int nopath) {
         printw(")");
         printw("\n\n ===========================================================================================================\n");
         refresh();
+        }
          if  (file_list[current_index] != 0 && percentage > 99 ){
             current_index++;
             if (current_index >= file_count) {
@@ -277,11 +347,15 @@ void display_progress(Mix_Music *music, const char* filename,int nopath) {
 void dir_playlist(int nopath)
 {
     int count = 0;            // Compteur pour parcourir la liste de fichiers
-    int current = 0;          // Indice de l'élément actuellement sélectionné dans la playlist
+    int current = 1;          // Indice de l'élément actuellement sélectionné dans la playlist
     int v = 1;    
     int index_count =0;
-    int index_count_max =40;            // Variable de contrôle pour la boucle principale (v = 0 pour quitter la boucle)
-
+    int index_count_max =40;
+    int index_act = 0;
+    int index_act_max= 40;
+    int index_2_count_max = 20;
+    int index_2_count = 0;
+    int rows, cols;
     clear();                  // Effacer l'écran avant de commencer
 
     while (v != 0) {          // Boucle principale qui continue tant que `v` n'est pas égal à 0
@@ -291,23 +365,49 @@ void dir_playlist(int nopath)
             clear();          // Effacer l'écran pour redessiner l'interface utilisateur
 
             // Affichage des instructions pour l'utilisateur
-            printw(" Playlist sdsExplorer \n\n Press q to return or ENTER For PLay_Selectegd audio_file\n\n");
+            printw(" Playlist sdsExplorer \n\n Press q to return or ENTER For PLay_Selected audio_file \n\n");
 
             // Boucle pour afficher la liste des fichiers dans la playlist
             while (count <= file_count - 1) {  // Parcours de tous les fichiers dans la playlist
-                if (count <= index_count_max -1 && count >= index_count){
-                    if (current <= index_count){
-                        index_count_max = index_count_max - 40;
-                        index_count = index_count -40;
+                getmaxyx(stdscr, rows, cols);
+
+                if (rows < 30 && cols <  120) {
+                  index_act = index_2_count;
+                  index_act_max = index_2_count_max;
+
+
+                } else {
+
+                  index_act = index_count;
+                  index_act_max = index_count_max;
+            }
+
+                    if (current < index_act+1)
+                    {
+                        if (index_act != 0){
+
+                        index_count_max = index_count_max - 40 ;
+                        index_2_count_max = index_2_count_max - 20;
+                        index_2_count = index_2_count - 20 ;
+                        index_count = index_count - 40;
+                        }
 
 
                     }
-                    if (current >= index_count_max){
+                    if (current > index_act_max  ){
                         index_count_max = index_count_max + 40;
                         index_count = index_count +40 ;
+                          index_2_count_max = index_2_count_max + 20;
+                        index_2_count = index_2_count + 20 ;
                     }
 
+               if (count > index_act && count < index_act_max +1){
+                     // stdscr est la fenêtre principale par défaut
 
+                    // Afficher les dimensions (debug)
+
+
+                // Ajuster le programme en fonction des dimensions
 
                  if (current == count) {        // Si l'élément actuel correspond à l'élément sélectionné
                     attron(COLOR_PAIR(5));     // Activer un style de couleur pour l'élément sélectionné
@@ -388,8 +488,8 @@ void dir_playlist(int nopath)
             // Si l'utilisateur appuie sur la touche "flèche haut" (KEY_UP)
             if (ch == KEY_UP) {
                 current--;  // Décrémenter `current` pour remonter dans la playlist
-                if (current < 0) {  // Si on dépasse le début de la liste
-                    current = 0;  // Forcer `current` à rester à 0 (début de la liste)
+                if (current < 1) {  // Si on dépasse le début de la liste
+                    current = 1;  // Forcer `current` à rester à 0 (début de la liste)
                 }
             }
 
