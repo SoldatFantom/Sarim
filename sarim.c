@@ -78,13 +78,22 @@
 #define SKIP_TIME 5 // secondes pour avancer/reculer
 #define MAX_FILES 9000 // Nombre maximum de fichiers audio
 #include<time.h>
+#define MAX_FILE_COUNT 1000 // Taille maximale fixe
+
+// Variables statiques pour gérer l'état des indices
+
+static int available_count = 0;   // Nombre d'indices disponibles
+static int file_count_global = 0; // Nombre total de fichiers (pour le contrôle)
+static int drawn_numbers[MAX_FILE_COUNT]; // Tableau pour stocker les numéros déjà tirés
+static int drawn_count = 0;               // Compteur des numéros tirés
+
 void display_ihelp();
 void handle_input();
 bool can_execute = true;
 int ch= 0;
-
+int last_memory =-1;
 // Fonction pour obtenir la durée totale d'un fichier MP3
-
+int suffle =0;
 int get_audio_duration(const char* filename) {
     AVFormatContext *format_ctx = NULL;
 
@@ -217,11 +226,12 @@ void display_progress(Mix_Music *music, const char* filename,int nopath) {
       printw(" This program was developed with the help of SDL2, SDL_mixer (zlib license) and FFmpeg (LGPL license)\n");
       printw(" Assistance provided by ChatGPT, a language model created by OpenAI.\n");
       printw(" Debugging and development supported by Soldat Fantom,\n with valuable help in identifying and correcting program errors.\n");
-      printw(" Thank you to all the people, technologies, and entities that contributed to this project!\n\n");
+      printw(" Thank you to all the people, technologies, and entities that contributed to this project!\n");
       printw(" Available commands:\n");
       printw(" d - open play_list Explorer\n");
       printw(" q - Quit the program\n");
       printw(" p - Pause/Resume the music\n");
+      printw(" s - Active or Unactive Suffle Mode\n");
       printw(" Right arrow - Fast forward a few seconds\n");
       printw(" Left arrow - Rewind a few seconds\n");
       printw(" Up arrow - Skip to the next track\n");
@@ -267,6 +277,10 @@ void display_progress(Mix_Music *music, const char* filename,int nopath) {
         printw("%d%%", percentage);
         attroff(COLOR_PAIR(6));
         printw(")");
+        if (suffle == 1)
+        {
+            printw("               Suffle (on)");
+        }
         printw("\n\n ===============================================================================                                                 \n");
         refresh();
 
@@ -285,6 +299,7 @@ void display_progress(Mix_Music *music, const char* filename,int nopath) {
       printw(" d - open play_list Explorer\n");
       printw(" q - Quit the program\n");
       printw(" p - Pause/Resume the music\n");
+      printw(" s - Active or Unactive Suffle Mode\n");
       printw(" Right arrow - Fast forward a few seconds\n");
       printw(" Left arrow - Rewind a few seconds\n");
       printw(" Up arrow - Skip to the next track\n");
@@ -330,11 +345,23 @@ void display_progress(Mix_Music *music, const char* filename,int nopath) {
         printw("%d%%", percentage);
         attroff(COLOR_PAIR(6));
         printw(")");
+        if (suffle == 1)
+        {
+            printw("               Suffle (on) %d");
+        }
         printw("\n\n ===========================================================================================================\n");
         refresh();
         }
          if  (file_list[current_index] != 0 && percentage > 99 ){
+            if (suffle == 1)
+            {
+             last_memory = current_index ;
+
+              current_index = get_unique_random_number(file_count);
+            }else{
             current_index++;
+            }
+
             if (current_index >= file_count) {
                 current_index = 0; // Revenir au début
             }
@@ -488,6 +515,7 @@ void dir_playlist(int nopath)
 
             // Si l'utilisateur appuie sur la touche "flèche haut" (KEY_UP)
             if (ch == KEY_UP) {
+
                 current--;  // Décrémenter `current` pour remonter dans la playlist
                 if (current < 1) {  // Si on dépasse le début de la liste
                     current = 1;  // Forcer `current` à rester à 0 (début de la liste)
@@ -508,6 +536,61 @@ void clear_input_buffer() {
     // Vider le tampon en appelant `getch()` jusqu'à ce qu'il soit vide
     while (getch() != ERR) {}
 }
+
+// Initialise ou réinitialise le tableau des numéros tirés
+void reset_drawn_numbers(int file_count) {
+    if (file_count <= 0 || file_count > MAX_FILE_COUNT) {
+        fprintf(stderr, "Erreur : file_count doit être compris entre 1 et %d.\n", MAX_FILE_COUNT);
+        exit(EXIT_FAILURE);
+    }
+
+    file_count_global = file_count; // Met à jour le nombre total de fichiers
+    drawn_count = 0;                // Réinitialise le compteur des numéros tirés
+
+    // Réinitialisation des numéros stockés
+    for (int i = 0; i < file_count_global; i++) {
+        drawn_numbers[i] = -1; // Initialisation avec une valeur impossible
+    }
+
+    printf("Cycle réinitialisé pour %d fichiers.\n", file_count_global);
+}
+
+// Vérifie si un numéro a déjà été tiré
+bool is_number_drawn(int number) {
+    for (int i = 0; i < drawn_count; i++) {
+        if (drawn_numbers[i] == number) {
+            return true; // Le numéro a déjà été tiré
+        }
+    }
+    return false;
+}
+
+// Tire un numéro aléatoire unique
+int get_unique_random_number() {
+    if (file_count_global == 0) {
+        fprintf(stderr, "Erreur : file_count_global non initialisé. Appelez reset_drawn_numbers().\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (drawn_count >= file_count_global) {
+        // Tous les numéros ont été tirés, réinitialisation automatique
+        reset_drawn_numbers(file_count_global);
+    }
+
+    int random_number;
+
+    // Boucle jusqu'à trouver un numéro non tiré
+    do {
+        random_number = rand() % file_count_global;
+    } while (is_number_drawn(random_number));
+
+    // Ajoute le numéro tiré au tableau
+    drawn_numbers[drawn_count++] = random_number;
+
+    return random_number;
+}
+
+
 // Fonction pour traiter les entrées de l'utilisateur avec ncurses
 void handle_input(char * file,int nopath) {
 
@@ -580,8 +663,24 @@ void handle_input(char * file,int nopath) {
             skip_audio(-SKIP_TIME);
             break;
         case KEY_UP: // Suivant
+             if (suffle == 1)
+            {
+             last_memory = current_index ;
 
-            if  (file_list[current_index] != 0 ){
+
+             current_index = get_unique_random_number(file_count);
+                // Jouer la piste sélectionnée de manière aléatoire
+
+
+
+
+
+            refresh();
+            stop_audio();
+            play_audio(file_list[current_index]);
+            }
+
+            if  (file_list[current_index] != 0 && suffle!= 1 ){
 
             current_index++;
             if (current_index >= file_count) {
@@ -595,19 +694,39 @@ void handle_input(char * file,int nopath) {
 
             break;
         case KEY_DOWN : // Précédent
-            if  (file_list[current_index] != 0){
+               if (suffle == 1)
+            {
+             if (last_memory != -1)
+             {
+             current_index = last_memory ;
+             last_memory = -1;
+             }else{
+
+
+               current_index = get_unique_random_number(file_count);
+             }
+                // Jouer la piste sélectionnée de manière aléatoire
+
+
+
+
+            refresh();
+            stop_audio();
+            play_audio(file_list[current_index]);
+            }
+
+            if  (file_list[current_index] != 0 && suffle!= 1 ){
 
             current_index--;
-            if (current_index < 0) {
-                current_index = file_count - 1; // Revenir à la fin
+            if (current_index >= file_count) {
+                current_index = 0; // Revenir au début   ////ici pour ka touche d logique de lecture du fichier playliste
             }
 
             refresh();
             stop_audio();
             play_audio(file_list[current_index]);
-            }else{
-            play_audio(file);
             }
+
             break;
       case '+':  // Augmenter le volume
             {
@@ -615,6 +734,18 @@ void handle_input(char * file,int nopath) {
                 if (current_volume < MIX_MAX_VOLUME) {
                     Mix_VolumeMusic(current_volume + 8);  // Augmenter le volume par 8
                 }
+            }
+            break;
+
+         case 's':  //mode suffle
+            {
+               if (suffle == 0)
+               {
+                suffle = 1;
+            }else{
+                suffle =0;
+                reset_drawn_numbers(file_count);
+            }
             }
             break;
         case '-':  // Diminuer le volume
@@ -652,6 +783,8 @@ void parse_m3u(const char *m3u_file) {
         }
     }
     fclose(file);
+    //obligatoire ici pour le suffle
+    reset_drawn_numbers(file_count);
 }
 
 void display_help() {
@@ -661,6 +794,7 @@ void display_help() {
     printf("  --dir <directory>     Recursively scan the directory for .mp3, .wav, and .ogg files and play them.\n");
     printf("                        The playlist will be created dynamically and played in order.\n");
     printf("  --nopath              Suppress the display of file paths in the output. Can be placed before or after\n");
+    printf("  --suffle              Activates shuffle mode for random play of audio files\n");
     printf("                        other options and arguments.\n");
     printf("  <file.m3u>            Play a playlist file in M3U format. The playlist should contain\n");
     printf("                        paths to .mp3, .wav, or .ogg files. The files will be played in the order listed.\n");
@@ -695,6 +829,7 @@ void display_ihelp() {
     printw("  --dir <directory>     Recursively scan the directory for .mp3, .wav, and .ogg files and play them.\n");
     printw("                        The playlist will be created dynamically and played in order.\n");
     printw("  --nopath              Suppress the display of file paths in the output. Can be placed before or after\n");
+    printw("  --suffle              Activates shuffle mode for random play of audio files\n");
     printw("                        other options and arguments.\n");
     printw("  <file.m3u>            Play a playlist file in M3U format. The playlist should contain\n");
     printw("                        paths to .mp3, .wav, or .ogg files. The files will be played in the order listed.\n");
@@ -722,7 +857,37 @@ void display_ihelp() {
 
 
 }
+
+char* expand_tilde(const char* path) {
+    if (path[0] == '~') {
+        // Obtenir le répertoire home de l'utilisateur courant
+        const char* home = getenv("HOME");
+        if (!home) {
+            fprintf(stderr, "Erreur : Impossible de trouver le répertoire home.\n");
+            return NULL;
+        }
+
+        // Allouer de la mémoire pour le chemin complet
+        size_t home_len = strlen(home);
+        size_t path_len = strlen(path);
+        char* full_path = malloc(home_len + path_len); // Pas besoin de +1 car on remplace le '~'
+        if (!full_path) {
+            fprintf(stderr, "Erreur : Allocation mémoire échouée.\n");
+            return NULL;
+        }
+
+        // Construire le chemin complet
+        strcpy(full_path, home);
+        strcat(full_path, path + 1); // Ignorer le '~'
+
+        return full_path;
+    }
+
+    // Si le chemin ne commence pas par '~', on retourne une copie
+    return strdup(path);
+}
 int main(int argc, char *argv[]) {
+
     int u = 0;
     int a =0;
     int nopath = 0;
@@ -755,11 +920,16 @@ int main(int argc, char *argv[]) {
     while (v != 1) {
         a++;
 
-
+        char* resolved_path = expand_tilde(argv[a]);
 
         // Rechercher "--nopath" dans les arguments
         if (strstr(argv[a], "--nopath") != NULL) {
             nopath = 1;
+
+        }
+         // Rechercher "--suffle" dans les arguments
+        if (strstr(argv[a], "--suffle") != NULL) {
+            suffle = 1;
 
         }
          if (a == argc-1) {  // Vérifier que 'a' ne dépasse pas 'argc'
@@ -779,7 +949,8 @@ a =0;
          u = 1;
          a ++;
         char dir_name [900];
-        sprintf(dir_name,"find '%s' -type f -name '*.mp3' -o -name '*.wav' -o -name '*.ogg' >/tmp/tmp.m3u",argv[a]);
+         char* resolved_path = expand_tilde(argv[a]);
+        sprintf(dir_name,"find '%s' -type f -name '*.mp3' -o -name '*.wav' -o -name '*.ogg' >/tmp/tmp.m3u",resolved_path);
         system(dir_name);
             parse_m3u("/tmp/tmp.m3u");
         if (file_count > 0) {
@@ -797,7 +968,8 @@ a =0;
 
         }else if (strstr(argv[a], ".m3u") != NULL) {
             u = 1;
-        parse_m3u(argv[a]);
+         char* resolved_path = expand_tilde(argv[a]);
+        parse_m3u(resolved_path);
         if (file_count > 0) {
             current_index = 0; // Commencer par le premier fichier
             printw("Playing: %s\n", file_list[current_index]);
@@ -814,7 +986,8 @@ a =0;
 
  //si ont depasse le nombre d'option passer ont essaye de lire un audio seule
     if (a == argc-1 && u == 0) {
-        play_audio(argv[1]);
+        char* resolved_path = expand_tilde(argv[1]);
+        play_audio(resolved_path);
     }
 
     // Gérer l'entrée utilisateur pendant la lecture
@@ -823,14 +996,15 @@ a =0;
         display_progress(music, file_list[current_index],nopath);  // Mettez à jour l'affichage
 
     }else
-    {
-        display_progress(music, argv[1],nopath);  // Mettez à jour l'affichage
+    {    char* resolved_path = expand_tilde(argv[1]);
+        display_progress(music, resolved_path,nopath);  // Mettez à jour l'affichage
 
     }
     if  (file_list[current_index] != 0){
         handle_input(file_list[current_index],nopath);
     }else{
-    handle_input(argv[1],nopath);
+     char* resolved_path = expand_tilde(argv[1]);
+    handle_input(resolved_path,nopath);
     }
       // Vérifiez les entrées utilisateur
 

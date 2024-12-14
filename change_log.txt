@@ -109,4 +109,138 @@ void clear_input_buffer() {
 
 
 }
+Soldat Fantom V_1.8 - December 14, 2024
+{
+    Added shuffle mode.
+    Fixed bugs related to handling relative paths passed as arguments.
 
+Below is the updated and improved code:
+Code: Randomized File Shuffle and Path Expansion in C
+
+This program manages a randomized shuffle mechanism for files and includes functionality to handle paths that use ~ for the home directory. It ensures each random number drawn is unique until all possibilities are exhausted, at which point it resets. It also correctly expands paths starting with ~.
+
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <stdbool.h>
+#include <curses.h>
+
+#define MAX_FILE_COUNT 1000 // Define the maximum number of files
+
+static int available_count = 0;   // Number of available indices
+static int file_count_global = 0; // Total number of files (for tracking)
+static int drawn_numbers[MAX_FILE_COUNT]; // Array to store already drawn numbers
+static int drawn_count = 0;               // Counter for drawn numbers
+
+// Clears the input buffer
+void clear_input_buffer() {
+    // Consume all characters from the buffer until it's empty
+    while (getch() != ERR) {}
+}
+
+// Initializes or resets the array of drawn numbers
+void reset_drawn_numbers(int file_count) {
+    if (file_count <= 0 || file_count > MAX_FILE_COUNT) {
+        fprintf(stderr, "Error: file_count must be between 1 and %d.\n", MAX_FILE_COUNT);
+        exit(EXIT_FAILURE);
+    }
+
+    file_count_global = file_count; // Update the total number of files
+    drawn_count = 0;                // Reset the drawn numbers counter
+
+    // Reset the array storing drawn numbers
+    for (int i = 0; i < file_count_global; i++) {
+        drawn_numbers[i] = -1; // Initialize with an impossible value
+    }
+
+    printf("Cycle reset for %d files.\n", file_count_global);
+}
+
+// Checks if a number has already been drawn
+bool is_number_drawn(int number) {
+    for (int i = 0; i < drawn_count; i++) {
+        if (drawn_numbers[i] == number) {
+            return true; // Number has already been drawn
+        }
+    }
+    return false;
+}
+
+// Draws a unique random number
+int get_unique_random_number() {
+    if (file_count_global == 0) {
+        fprintf(stderr, "Error: file_count_global is uninitialized. Call reset_drawn_numbers() first.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (drawn_count >= file_count_global) {
+        // All numbers have been drawn, automatically reset
+        reset_drawn_numbers(file_count_global);
+    }
+
+    int random_number;
+
+    // Loop until a non-drawn number is found
+    do {
+        random_number = rand() % file_count_global;
+    } while (is_number_drawn(random_number));
+
+    // Add the drawn number to the array
+    drawn_numbers[drawn_count++] = random_number;
+
+    return random_number;
+}
+
+// Expands paths starting with '~' to the user's home directory
+char* expand_tilde(const char* path) {
+    if (path[0] == '~') {
+        // Retrieve the current user's home directory
+        const char* home = getenv("HOME");
+        if (!home) {
+            fprintf(stderr, "Error: Unable to determine the home directory.\n");
+            return NULL;
+        }
+
+        // Allocate memory for the expanded path
+        size_t home_len = strlen(home);
+        size_t path_len = strlen(path);
+        char* full_path = malloc(home_len + path_len); // +path_len already accounts for the removed '~'
+        if (!full_path) {
+            fprintf(stderr, "Error: Memory allocation failed.\n");
+            return NULL;
+        }
+
+        // Build the expanded path
+        strcpy(full_path, home);
+        strcat(full_path, path + 1); // Skip the '~'
+
+        return full_path;
+    }
+
+    // If the path does not start with '~', return a copy of the original path
+    return strdup(path);
+}
+
+Explanation and Context
+
+    Shuffle Mode:
+        The shuffle mode ensures that numbers are drawn randomly without repetition.
+        Once all numbers have been drawn, the list resets automatically for a new cycle.
+
+    Path Handling with ~:
+        The function expand_tilde resolves paths that start with ~ (e.g., ~/Music/song.mp3) to the user's home directory (/home/username/Music/song.mp3).
+        This is important because the ~ shortcut is not automatically expanded in C programs unless explicitly handled.
+
+    Improvements Added:
+        Better error handling for invalid file_count values and uninitialized states.
+        Memory allocation checks to avoid potential crashes.
+
+    Usage:
+        The reset_drawn_numbers() function should be called with the total number of files to initialize the randomization logic.
+        Call get_unique_random_number() to get a new random number that has not been drawn yet.
+        The expand_tilde() function ensures paths with ~ are correctly expanded before being used.
+
+
+
+
+}
