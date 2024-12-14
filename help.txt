@@ -11,8 +11,11 @@ Options:
 
     --nopath
     Suppresses the display of file paths in the output. This option can be placed before or after other options and arguments.
-
-    <file.m3u>
+   
+    --suffle              
+    Activates shuffle mode for random play of audio files
+    
+   <file.m3u>
     Plays a playlist file in M3U format. The playlist should contain paths to .mp3, .wav, or .ogg files, which will be played in the listed order.
 
     <file.mp3 | file.wav | file.ogg>
@@ -55,6 +58,9 @@ Controls During Playback:
 
     p
     Pauses/Resumes playback.
+    
+    s              
+    Activates shuffle mode for random play of audio files
 
     Right Arrow
     Skips forward in the track.
