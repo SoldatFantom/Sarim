@@ -347,7 +347,7 @@ void display_progress(Mix_Music *music, const char* filename,int nopath) {
         printw(")");
         if (suffle == 1)
         {
-            printw("               Suffle (on) %d");
+            printw("               Suffle (on) ");
         }
         printw("\n\n ===========================================================================================================\n");
         refresh();
