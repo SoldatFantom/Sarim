@@ -393,7 +393,7 @@ void dir_playlist(int nopath)
             clear();          // Effacer l'écran pour redessiner l'interface utilisateur
 
             // Affichage des instructions pour l'utilisateur
-            printw(" Playlist sdsExplorer \n\n Press q to return or ENTER For PLay_Selected audio_file \n\n");
+            printw(" Playlist Explorer \n\n Press q to return or ENTER For PLay_Selected audio_file \n\n");
 
             // Boucle pour afficher la liste des fichiers dans la playlist
             while (count <= file_count - 1) {  // Parcours de tous les fichiers dans la playlist
@@ -810,6 +810,7 @@ void display_help() {
     printf("  sarim track.ogg                      Play the specified .ogg file.\n");
     printf("  sarim --nopath song.mp3              Play the specified .mp3 file but suppress the file path display.\n\n");
     printf("Controls during playback:\n");
+    printf("  s              Activates shuffle mode for random play of audio files\n");
     printf("  d                 Open play_list Explorer.\n");
     printf("  q                 Quit the player.\n");
     printf("  p                 Pause/Resume the playback.\n");
@@ -845,6 +846,7 @@ void display_ihelp() {
     printw("  sarim track.ogg                      Play the specified .ogg file.\n");
     printw("  sarim --nopath song.mp3              Play the specified .mp3 file but suppress the file path display.\n\n");
     printw("Controls during playback:\n");
+    printw("  s              Activates shuffle mode for random play of audio files\n");
     printw("  d                 Open play_list Explorer.\n");
     printw("  q                 Quit the player.\n");
     printw("  p                 Pause/Resume the playback.\n");
